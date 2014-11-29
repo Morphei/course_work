@@ -1,6 +1,9 @@
 #include <QCoreApplication>
 
-int main(int argc, char *argv[])
-{
+#include "game.h"
 
+int main()
+{
+game game;
+game.run();
 }
