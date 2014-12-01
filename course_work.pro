@@ -28,3 +28,10 @@ SOURCES += main.cpp \
 
 HEADERS += \
     game.h
+
+OTHER_FILES += \
+    resources/grass_background.ora \
+    resources/GoodDog.otf \
+    resources/main_background.jpg \
+    resources/main_background_800x600.jpg \
+    resources/grass_background.jpg
