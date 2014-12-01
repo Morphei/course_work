@@ -27,5 +27,6 @@
 *.out
 *.app
 
+.pro
 .pro.user
 .user
