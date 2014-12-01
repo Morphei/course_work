@@ -113,9 +113,10 @@ void game::loadResources()
 {
     if(state == MAIN_MENU)
     {
-        background.loadFromFile("/home/morphei/course_work/course_work/resources/main_background_800x600.jpg");
+        background.loadFromFile("/home/hkitty/Projects/Test/course_work/resources/main_background_800x600.jpg");
+        //background.loadFromFile(":/Images/main_background_800x600.jpg");
         background_sprite.setTexture(background);
-        mainFont.loadFromFile("/home/morphei/course_work/course_work/resources/GoodDog.otf");
+        mainFont.loadFromFile("/home/hkitty/Projects/Test/course_work/resources/GoodDog.otf");
         playOption.setFont(mainFont);
         playOption.setString("Play");
         playOption.setPosition(50,mainWindow.getSize().y/1.8);
@@ -131,7 +132,7 @@ void game::loadResources()
     {
         window_height=mainWindow.getSize().x/128;
         window_width=mainWindow.getSize().y/128+3;
-        background.loadFromFile("/home/morphei/course_work/course_work/resources/grass_background.jpg");
+        background.loadFromFile("/home/hkitty/Projects/Test/course_work/resources/grass_background.jpg");
         background_sprite.setTexture(background);
     }
 }
