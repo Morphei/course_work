@@ -10,12 +10,13 @@ public:
 
 private:
     void processEvents();
-    void update();
+    void update(sf::Time TimePerFrame);
     void render();
     void loadResources();
     void handlePlayerInput(sf::Keyboard::Key key,bool isPressed);
 
 private:
+    sf::Time TimePerFrame;
     int index_Menu;
     enum game_state {MAIN_MENU, GAME};
     game_state state;

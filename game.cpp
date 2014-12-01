@@ -4,6 +4,7 @@ using namespace sf;
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/800,600), "GameName")
 {
+    TimePerFrame = seconds(1.f/60.f);
     if(g_state == 0)
     {
         state = MAIN_MENU;
@@ -17,10 +18,18 @@ game::game(bool g_state)
 
 void game::run()
 {
+    sf::Clock clock;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
     while(mainWindow.isOpen())
     {
         processEvents();
-        update();
+        timeSinceLastUpdate += clock.restart();
+        while (timeSinceLastUpdate > TimePerFrame)
+        {
+        timeSinceLastUpdate -= TimePerFrame;
+        processEvents();
+        update(TimePerFrame);
+        }
         render();
     }
 }
@@ -43,7 +52,7 @@ void game::processEvents()
     }
 }
 
-void game::update()
+void game::update(Time TimePerFrame)
 {
 
 if(state == MAIN_MENU)
