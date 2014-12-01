@@ -4,6 +4,6 @@
 
 int main()
 {
-game game;
-game.run();
+game game(0);
+
 }
