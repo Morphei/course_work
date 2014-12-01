@@ -5,5 +5,4 @@
 int main()
 {
 game game(0);
-
 }
