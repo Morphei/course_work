@@ -14,8 +14,10 @@ private:
     void render();
     void loadResources();
     void handlePlayerInput(sf::Keyboard::Key key,bool isPressed);
+    void move(int route);
 
 private:
+    sf::String path_to_resources;
     sf::Vector2i framesWindow;
     sf::Time TimePerFrame;
     int index_Menu;
@@ -24,11 +26,14 @@ private:
     sf::Vector2f background_position, object_position;
     int window_height, window_width;
     sf::RenderWindow mainWindow;
-//    sf::Texture background, object;
-//    sf::Sprite background_sprite, object_sprite;
     std::vector<sf::Text> m_options;
     std::vector<sf::Sprite> sprites;
     std::vector<sf::Texture> textures;
+    //====================
+    sf::Texture hero;
+    sf::Sprite hero_sprite;
+    sf::Vector2f hero_position;
+    //====================
     sf::Text playOption, exitOption;
     sf::Font mainFont;
 };

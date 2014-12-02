@@ -1,20 +1,23 @@
 #include "game.h"
 #include <QDebug>
 using namespace sf;
-int scene[10][14] { 1,0,0,0,0,0,0,0,0,0,0,0,0,1,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,1,2,0,2,0,2,0,0,0,0,0,0,
-                    0,0,1,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,1,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+
+int scene[10][14] { 0,0,0,0,0,0,0,0,0,0,0,1,1,0,
+                    1,0,0,1,0,1,0,0,1,0,1,0,0,1,
+                    1,0,0,1,0,0,1,0,1,0,1,0,0,1,
+                    0,1,1,0,0,0,0,1,0,0,1,0,1,1,
+                    1,0,0,1,0,0,1,0,0,0,1,1,0,1,
+                    1,0,0,1,0,1,0,0,0,0,1,0,0,1,
+                    0,0,1,0,0,0,0,0,2,0,2,0,0,0,
                     0,0,1,0,0,0,0,0,0,0,0,0,0,0,
                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                     1,0,0,0,0,0,0,0,0,0,0,0,0,1
                                                 };
+
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/896,640), "GameName")
 {
+    path_to_resources = "/home/morphei/course_work/course_work/resources/";
     framesWindow.x = 14;
     framesWindow.y = 10;
     TimePerFrame = seconds(1.f/60.f);
@@ -31,8 +34,10 @@ game::game(bool g_state)
 
 void game::run()
 {
+
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    mainWindow.setVerticalSyncEnabled(true);
     while(mainWindow.isOpen())
     {
         processEvents();
@@ -71,15 +76,23 @@ void game::update(Time TimePerFrame)
 if(state == MAIN_MENU)
 {
 
+    Color color;
     if(!m_options.empty())
     {
+        color.r = 77;
+        color.g = 49;
+        color.b = 2;
         for(int i = 0; i <= m_options.size()-1; i++)
         {
-            m_options.at(i).setColor(Color::Black);
+
+            m_options.at(i).setColor(color);
             m_options.at(i).setScale(5,4);
         }
-        m_options.operator [](index_Menu).setColor(Color::Red);
-        m_options.operator [](index_Menu).setScale(6,4);
+        color.r = 14;
+        color.g = 142;
+        color.b = 2;
+        m_options.at(index_Menu).setColor(color);
+        m_options.at(index_Menu).setScale(6,4);
     }
 
 }
@@ -128,6 +141,8 @@ if(state == GAME)
                 mainWindow.draw(sprites.at(scene[i][j]));
                 }
             }
+        hero_sprite.setPosition(hero_position);
+        mainWindow.draw(hero_sprite);
 
     }
     mainWindow.display();
@@ -139,19 +154,19 @@ void game::loadResources()
     {
         Texture background;
         Sprite background_sp;
-        background.loadFromFile("/home/morphei/course_work/course_work/resources/main_background_800x600.jpg");
+        background.loadFromFile(path_to_resources+"main_background_800x600_b.jpg");
         textures.push_back(background);
         sprites.push_back(background_sp);
         sprites.at(0).setTexture(textures.at(0));
-        mainFont.loadFromFile("/home/morphei/course_work/course_work/resources/GoodDog.otf");
+        mainFont.loadFromFile(path_to_resources+"GoodDog.otf");
         playOption.setFont(mainFont);
         playOption.setString("Play");
-        playOption.setPosition(50,mainWindow.getSize().y/1.8);
+        playOption.setPosition(50,mainWindow.getSize().y/3);
         playOption.setScale(5,4);
         m_options.push_back(playOption);
         exitOption.setFont(mainFont);
         exitOption.setString("ExiT");
-        exitOption.setPosition(50,mainWindow.getSize().y/1.8+120);
+        exitOption.setPosition(50,mainWindow.getSize().y/3+120);
         exitOption.setScale(5,4);
         m_options.push_back(exitOption);
     }
@@ -160,9 +175,9 @@ void game::loadResources()
         window_height=mainWindow.getSize().x/128;
         window_width=mainWindow.getSize().y/128+3;
         Texture tree,way,flower;
-        textures.at(0).loadFromFile("/home/morphei/course_work/course_work/resources/grass_background.jpg");
-        flower.loadFromFile("/home/morphei/course_work/course_work/resources/obj_01.png");
-        tree.loadFromFile("/home/morphei/course_work/course_work/resources/obj_02.png");
+        textures.at(0).loadFromFile(path_to_resources+"grass_background.jpg");
+        flower.loadFromFile(path_to_resources+"obj_01.png");
+        tree.loadFromFile(path_to_resources+"obj_02.png");
         //textures.push_back(way);
         textures.push_back(flower);
         textures.push_back(tree);
@@ -173,6 +188,10 @@ void game::loadResources()
         tree_sp.setTexture(textures.at(2));
         sprites.push_back(flower_sp);
         sprites.push_back(tree_sp);
+        hero.loadFromFile(path_to_resources+"Bomzh.png");
+        hero_sprite.setTexture(hero);
+        hero_position.x = 160;
+        hero_position.y = 160;
     }
 }
 
@@ -210,7 +229,59 @@ void game::handlePlayerInput(Keyboard::Key key, bool isPressed)
         }
     if(state == GAME)
         {
+        if (isPressed){
+            if (key == sf::Keyboard::W || key == sf::Keyboard::Up){
+                move(0);
+                }
+            else if (key == sf::Keyboard::S || key == sf::Keyboard::Down){
+                move(1);
+                }
+            else if (key == sf::Keyboard::A || key == sf::Keyboard::Left){
+                move(2);
+                }
+            else if (key == sf::Keyboard::D || key == sf::Keyboard::Right){
+                move(3);
+                }
+        }
 
         }
 
+}
+
+void game::move(int route){
+    switch (route) {
+    case 0:
+        hero.loadFromFile(path_to_resources+"Bomzh-back.png");
+        for (int i = 0; i < 16; i++){
+        hero_position.y -= 4;
+        render();
+        }
+        break;
+
+    case 1:
+        hero.loadFromFile(path_to_resources+"Bomzh-main.png");
+        for (int i = 0; i < 16; i++){
+            hero_position.y += 4;
+            render();
+        }
+        break;
+
+    case 2:
+        hero.loadFromFile(path_to_resources+"Bomzh-left.png");
+        for (int i = 0; i < 16; i++){
+        hero_position.x -= 4;
+        render();
+        }
+        break;
+
+    case 3:
+        hero.loadFromFile(path_to_resources+"Bomzh.png");
+        for (int i = 0; i < 16; i++){
+        hero_position.x += 4;
+        render();
+        }
+        break;
+    default:
+        break;
+    }
 }
