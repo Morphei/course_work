@@ -14,6 +14,7 @@ private:
     void render();
     void loadResources();
     void handlePlayerInput(sf::Keyboard::Key key,bool isPressed);
+    void move(int route);
 
 private:
     sf::Vector2i framesWindow;
@@ -29,6 +30,11 @@ private:
     std::vector<sf::Text> m_options;
     std::vector<sf::Sprite> sprites;
     std::vector<sf::Texture> textures;
+    //====================
+    sf::Texture hero;
+    sf::Sprite hero_sprite;
+    sf::Vector2f hero_position;
+    //====================
     sf::Text playOption, exitOption;
     sf::Font mainFont;
 };

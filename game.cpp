@@ -1,16 +1,19 @@
 #include "game.h"
 #include <QDebug>
 using namespace sf;
-int scene[14][10] = { 0,1,1,1,1,1,1,1,1,1,1,1,1,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                      0,0,0,0,0,0,0,0,0,0,0,0,0,1};
+
+int scene[10][14] { 0,0,0,0,0,0,0,0,0,0,0,1,1,0,
+                    1,0,0,1,0,1,0,0,1,0,1,0,0,1,
+                    1,0,0,1,0,0,1,0,1,0,1,0,0,1,
+                    0,1,1,0,0,0,0,1,0,0,1,0,1,1,
+                    1,0,0,1,0,0,1,0,0,0,1,1,0,1,
+                    1,0,0,1,0,1,0,0,0,0,1,0,0,1,
+                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0,0,0,0,0
+                                                };
+
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/896,640), "GameName")
 {
@@ -121,7 +124,7 @@ if(state == GAME)
         for(int i = 0; i <= framesWindow.y; i++)
             for(int j = 0; j <= framesWindow.x; j++)
             {
-                if(scene[i][j]!=0)
+                if(scene[i][j]!=0&&scene[i][j]!=-1)
                 {
                 object_position.x = 0 + j*64;
                 object_position.y = 0 + i*64;
@@ -129,6 +132,8 @@ if(state == GAME)
                 mainWindow.draw(sprites.at(scene[i][j]));
                 }
             }
+        hero_sprite.setPosition(hero_position);
+        mainWindow.draw(hero_sprite);
 
     }
     mainWindow.display();
@@ -163,15 +168,21 @@ void game::loadResources()
         Texture tree,way,flower;
         textures.at(0).loadFromFile("/home/hkitty/course_work/resources/grass_background.jpg");
         flower.loadFromFile("/home/hkitty/course_work/resources/obj_01.png");
-        //textures.push_back(tree);
+        tree.loadFromFile("/home/hkitty/course_work/resources/obj_02.png");
         //textures.push_back(way);
         textures.push_back(flower);
+        textures.push_back(tree);
         Sprite tree_sp,way_sp,flower_sp;
         sprites.at(0).setTexture(textures.at(0));
-        //tree_sp.setTexture(textures.at(1));
         //way_sp.setTexture(textures.at(2));
         flower_sp.setTexture(textures.at(1));
+        tree_sp.setTexture(textures.at(2));
         sprites.push_back(flower_sp);
+        sprites.push_back(tree_sp);
+        hero.loadFromFile("/home/hkitty/course_work/resources/Bomzh.png");
+        hero_sprite.setTexture(hero);
+        hero_position.x = 160;
+        hero_position.y = 160;
     }
 }
 
@@ -209,7 +220,59 @@ void game::handlePlayerInput(Keyboard::Key key, bool isPressed)
         }
     if(state == GAME)
         {
+        if (isPressed){
+            if (key == sf::Keyboard::W || key == sf::Keyboard::Up){
+                move(0);
+                }
+            else if (key == sf::Keyboard::S || key == sf::Keyboard::Down){
+                move(1);
+                }
+            else if (key == sf::Keyboard::A || key == sf::Keyboard::Left){
+                move(2);
+                }
+            else if (key == sf::Keyboard::D || key == sf::Keyboard::Right){
+                move(3);
+                }
+        }
 
         }
 
+}
+
+void game::move(int route){
+    switch (route) {
+    case 0:
+        hero.loadFromFile("/home/hkitty/course_work/resources/Bomzh-back.png");
+        for (int i = 0; i < 16; i++){
+        hero_position.y -= 4;
+        render();
+        }
+        break;
+
+    case 1:
+        hero.loadFromFile("/home/hkitty/course_work/resources/Bomzh-main.png");
+        for (int i = 0; i < 16; i++){
+            hero_position.y += 4;
+            render();
+        }
+        break;
+
+    case 2:
+        hero.loadFromFile("/home/hkitty/course_work/resources/Bomzh-left.png");
+        for (int i = 0; i < 16; i++){
+        hero_position.x -= 4;
+        render();
+        }
+        break;
+
+    case 3:
+        hero.loadFromFile("/home/hkitty/course_work/resources/Bomzh.png");
+        for (int i = 0; i < 16; i++){
+        hero_position.x += 4;
+        render();
+        }
+        break;
+    default:
+        break;
+    }
 }
