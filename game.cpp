@@ -1,12 +1,12 @@
 #include "game.h"
 #include <QDebug>
 using namespace sf;
-int scene[14][10] { 1,1,1,1,1,1,1,1,1,1,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+int scene[10][14] { 0,0,0,0,0,0,0,0,0,0,0,1,1,0,
+                    1,0,0,1,0,1,0,0,1,0,1,0,0,1,
+                    1,0,0,1,0,0,1,0,1,0,1,0,0,1,
+                    0,1,1,0,0,0,0,1,0,0,1,0,1,1,
+                    1,0,0,1,0,0,1,0,0,0,1,1,0,1,
+                    1,0,0,1,0,1,0,0,0,0,1,0,0,1,
                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -120,7 +120,7 @@ if(state == GAME)
         for(int i = 0; i <= framesWindow.y; i++)
             for(int j = 0; j <= framesWindow.x; j++)
             {
-                if(scene[i][j]!=0)
+                if(scene[i][j]!=0&&scene[i][j]!=-1)
                 {
                 object_position.x = 0 + j*64;
                 object_position.y = 0 + i*64;
@@ -162,15 +162,17 @@ void game::loadResources()
         Texture tree,way,flower;
         textures.at(0).loadFromFile("/home/morphei/course_work/course_work/resources/grass_background.jpg");
         flower.loadFromFile("/home/morphei/course_work/course_work/resources/obj_01.png");
-        //textures.push_back(tree);
+        tree.loadFromFile("/home/morphei/course_work/course_work/resources/obj_02.png");
         //textures.push_back(way);
         textures.push_back(flower);
+        textures.push_back(tree);
         Sprite tree_sp,way_sp,flower_sp;
         sprites.at(0).setTexture(textures.at(0));
-        //tree_sp.setTexture(textures.at(1));
         //way_sp.setTexture(textures.at(2));
         flower_sp.setTexture(textures.at(1));
+        tree_sp.setTexture(textures.at(2));
         sprites.push_back(flower_sp);
+        sprites.push_back(tree_sp);
     }
 }
 
