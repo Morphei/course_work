@@ -16,16 +16,19 @@ private:
     void handlePlayerInput(sf::Keyboard::Key key,bool isPressed);
 
 private:
+    sf::Vector2i framesWindow;
     sf::Time TimePerFrame;
     int index_Menu;
     enum game_state {MAIN_MENU, GAME};
     game_state state;
-    sf::Vector2f background_position;
+    sf::Vector2f background_position, object_position;
     int window_height, window_width;
     sf::RenderWindow mainWindow;
-    sf::Texture background;
-    sf::Sprite background_sprite;
+//    sf::Texture background, object;
+//    sf::Sprite background_sprite, object_sprite;
     std::vector<sf::Text> m_options;
+    std::vector<sf::Sprite> sprites;
+    std::vector<sf::Texture> textures;
     sf::Text playOption, exitOption;
     sf::Font mainFont;
 };
