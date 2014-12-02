@@ -1,17 +1,16 @@
 #include "game.h"
 #include <QDebug>
 using namespace sf;
-int scene[14][10] { 1,1,1,1,1,1,1,1,1,1,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0
-                                                };
+int scene[14][10] = { 0,1,1,1,1,1,1,1,1,1,1,1,1,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                      0,0,0,0,0,0,0,0,0,0,0,0,0,1};
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/896,640), "GameName")
 {
@@ -31,8 +30,10 @@ game::game(bool g_state)
 
 void game::run()
 {
+
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    mainWindow.setVerticalSyncEnabled(true);
     while(mainWindow.isOpen())
     {
         processEvents();
@@ -139,11 +140,11 @@ void game::loadResources()
     {
         Texture background;
         Sprite background_sp;
-        background.loadFromFile("/home/morphei/course_work/course_work/resources/main_background_800x600.jpg");
+        background.loadFromFile("/home/hkitty/course_work/resources/main_background_800x600.jpg");
         textures.push_back(background);
         sprites.push_back(background_sp);
         sprites.at(0).setTexture(textures.at(0));
-        mainFont.loadFromFile("/home/morphei/course_work/course_work/resources/GoodDog.otf");
+        mainFont.loadFromFile("/home/hkitty/course_work/resources/GoodDog.otf");
         playOption.setFont(mainFont);
         playOption.setString("Play");
         playOption.setPosition(50,mainWindow.getSize().y/1.8);
@@ -160,8 +161,8 @@ void game::loadResources()
         window_height=mainWindow.getSize().x/128;
         window_width=mainWindow.getSize().y/128+3;
         Texture tree,way,flower;
-        textures.at(0).loadFromFile("/home/morphei/course_work/course_work/resources/grass_background.jpg");
-        flower.loadFromFile("/home/morphei/course_work/course_work/resources/obj_01.png");
+        textures.at(0).loadFromFile("/home/hkitty/course_work/resources/grass_background.jpg");
+        flower.loadFromFile("/home/hkitty/course_work/resources/obj_01.png");
         //textures.push_back(tree);
         //textures.push_back(way);
         textures.push_back(flower);
