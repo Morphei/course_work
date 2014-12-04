@@ -2,16 +2,16 @@
 #include <QDebug>
 using namespace sf;
 
-int scene[10][14] { 0,0,0,0,0,0,0,0,0,0,0,1,1,0,
-                    1,0,0,1,0,1,0,0,1,0,1,0,0,1,
-                    1,0,0,1,0,0,1,0,1,0,1,0,0,1,
-                    0,1,1,0,0,0,0,1,0,0,1,0,1,1,
-                    1,0,0,1,0,0,1,0,0,0,1,1,0,1,
-                    1,0,0,1,0,1,0,0,0,0,1,0,0,1,
-                    0,0,1,0,0,0,0,0,2,0,2,0,0,0,
-                    0,0,1,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    1,0,0,0,0,0,0,0,0,0,0,0,0,1
+int scene[10][14] { 0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
+                    0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
+                    0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
+                    0,0,0,1,0, 0, 0,0,0,0,0,0,0,0,
+                    0,0,0,1,0, 0, 0,0,0,0,0,0,0,0,
+                    0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
+                    0,0,0,0,0, 2,-1,0,0,0,0,0,0,0,
+                    0,0,0,0,0,-1,-1,0,0,0,0,0,0,0,
+                    0,0,0,0,0,-1,-1,0,0,0,0,0,0,0,
+                    0,0,0,0,0, 0, 0,0,0,0,0,0,0,0
                                                 };
 
 game::game(bool g_state)
@@ -79,18 +79,18 @@ if(state == MAIN_MENU)
     Color color;
     if(!m_options.empty())
     {
-        color.r = 77;
-        color.g = 49;
-        color.b = 2;
+        color.r = 77;//
+        color.g = 49;//>Brown
+        color.b = 2; //
         for(int i = 0; i <= m_options.size()-1; i++)
         {
 
             m_options.at(i).setColor(color);
             m_options.at(i).setScale(5,4);
         }
-        color.r = 14;
-        color.g = 142;
-        color.b = 2;
+        color.r = 14; //
+        color.g = 142;//>Green
+        color.b = 2;  //
         m_options.at(index_Menu).setColor(color);
         m_options.at(index_Menu).setScale(6,4);
     }
@@ -142,6 +142,10 @@ if(state == GAME)
                 }
             }
         hero_sprite.setPosition(hero_position);
+        int x,y;
+        x = hero_position.y/64;
+        y = hero_position.x/64;
+        if(scene[x][y]!=-1)
         mainWindow.draw(hero_sprite);
 
     }
@@ -190,8 +194,8 @@ void game::loadResources()
         sprites.push_back(tree_sp);
         hero.loadFromFile(path_to_resources+"Bomzh.png");
         hero_sprite.setTexture(hero);
-        hero_position.x = 160;
-        hero_position.y = 160;
+        hero_position.x = 128;
+        hero_position.y = 128;
     }
 }
 
