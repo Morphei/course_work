@@ -2,16 +2,16 @@
 #include <QDebug>
 using namespace sf;
 
-int scene[10][14] { 0,1,0,0,0, 0, 0,0,2,0,0,0,0,0,
+int scene[10][14] { 2,1,0,0,2, 0, 0,0,2,0,0,0,0,2,
                     0,0,0,0,0, 0, 0,2,0,0,0,0,0,0,
-                    0,0,0,0,0, 0, 0,0,0,1,2,0,0,0,
+                    2,0,0,0,0, 0, 0,0,0,1,2,0,0,0,
                     0,0,0,1,0, 0, 0,0,0,0,0,2,0,0,
                     0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
-                    0,0,0,0,0, 2, 2,0,2,2,0,0,0,0,
-                    0,0,0,0,0, 2, 2,2,2,0,0,0,0,0,
+                    0,0,0,2,0, 2, 2,0,2,2,0,0,0,0,
+                    0,0,2,2,2, 2, 2,2,2,0,0,0,0,0,
                     0,0,0,0,0, 0, 0,2,0,2,0,2,0,0,
-                    0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
-                    0,0,0,0,0, 0, 0,0,0,0,0,0,0,0
+                    0,0,2,0,2, 0, 2,0,0,0,0,0,0,0,
+                    2,0,0,0,0, 0, 0,0,0,0,0,0,0,0
                                                 };
 
 game::game(bool g_state)
@@ -129,6 +129,12 @@ if(state == GAME)
                 sprites.at(0).setPosition(background_position);
                 mainWindow.draw(sprites.at(0));
             }
+        hero_sprite.setPosition(hero_position);
+        int x,y;
+        x = hero_position.y/64;
+        y = hero_position.x/64;
+        if(scene[x][y]!=-1)
+        mainWindow.draw(hero_sprite);
         //Drawing objects
         for(int i = 0; i <= framesWindow.y; i++)
             for(int j = 0; j <= framesWindow.x; j++)
@@ -141,12 +147,6 @@ if(state == GAME)
                 mainWindow.draw(sprites.at(scene[i][j]));
                 }
             }
-        hero_sprite.setPosition(hero_position);
-        int x,y;
-        x = hero_position.y/64;
-        y = hero_position.x/64;
-        if(scene[x][y]!=-1)
-        mainWindow.draw(hero_sprite);
 
     }
     mainWindow.display();
