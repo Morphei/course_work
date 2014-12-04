@@ -2,15 +2,15 @@
 #include <QDebug>
 using namespace sf;
 
-int scene[10][14] { 0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
+int scene[10][14] { 0,1,0,0,0, 0, 0,0,2,0,0,0,0,0,
+                    0,0,0,0,0, 0, 0,2,0,0,0,0,0,0,
+                    0,0,0,0,0, 0, 0,0,0,1,2,0,0,0,
+                    0,0,0,1,0, 0, 0,0,0,0,0,2,0,0,
                     0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
+                    0,0,0,0,0, 2, 2,0,2,2,0,0,0,0,
+                    0,0,0,0,0, 2, 2,2,2,0,0,0,0,0,
+                    0,0,0,0,0, 0, 0,2,0,2,0,2,0,0,
                     0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
-                    0,0,0,1,0, 0, 0,0,0,0,0,0,0,0,
-                    0,0,0,1,0, 0, 0,0,0,0,0,0,0,0,
-                    0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
-                    0,0,0,0,0, 2,-1,0,0,0,0,0,0,0,
-                    0,0,0,0,0,-1,-1,0,0,0,0,0,0,0,
-                    0,0,0,0,0,-1,-1,0,0,0,0,0,0,0,
                     0,0,0,0,0, 0, 0,0,0,0,0,0,0,0
                                                 };
 
@@ -179,9 +179,9 @@ void game::loadResources()
         window_height=mainWindow.getSize().x/128;
         window_width=mainWindow.getSize().y/128+3;
         Texture tree,way,flower;
-        textures.at(0).loadFromFile(path_to_resources+"grass_background.jpg");
+        textures.at(0).loadFromFile(path_to_resources+"grass_background_02.jpg");
         flower.loadFromFile(path_to_resources+"obj_01.png");
-        tree.loadFromFile(path_to_resources+"obj_02.png");
+        tree.loadFromFile(path_to_resources+"obj_03.png");
         //textures.push_back(way);
         textures.push_back(flower);
         textures.push_back(tree);
