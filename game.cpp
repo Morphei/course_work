@@ -2,24 +2,24 @@
 #include <QDebug>
 using namespace sf;
 
-int scene[10][14] { 2,1,0,0,2, 0, 0,0,2,0,0,0,0,2,
-                    0,0,0,0,0, 0, 0,2,0,0,0,0,0,0,
-                    2,0,0,0,0, 0, 0,0,0,1,2,0,0,0,
-                    0,0,0,1,0, 0, 0,0,0,0,0,2,0,0,
-                    0,0,0,0,0, 0, 0,0,0,0,0,0,0,0,
-                    0,0,0,2,0, 2, 2,0,2,2,0,0,0,0,
-                    0,0,2,2,2, 2, 2,2,2,0,0,0,0,0,
-                    0,0,0,0,0, 0, 0,2,0,2,0,2,0,0,
-                    0,0,2,0,2, 0, 2,0,0,0,0,0,0,0,
-                    2,0,0,0,0, 0, 0,0,0,0,0,0,0,0
+int scene[10][14] {  2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2,
+                    -1,-1, 0, 0,-1,-1, 0, 2,-1,-1, 0, 0, 0,-1,
+                     2, 0, 0, 0, 0, 0, 0,-1,-1, 1, 2, 0, 0, 0,
+                    -1,-1, 0, 1, 0, 0, 0, 0, 0, 0,-1, 2, 0, 0,
+                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1, 0,
+                     0, 0, 0, 2, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0,
+                     0, 0, 2, 2, 2, 2, 2, 2, 2,-1,-1, 0, 0, 0,
+                     0, 0,-1,-1,-1,-1,-1, 2, 0, 2, 0, 2, 0, 0,
+                     0, 0, 2, 0, 2, 0, 2,-1,-1,-1,-1,-1,-1, 0,
+                     2, 0,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 1
                                                 };
 
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/896,640), "GameName")
 {
     path_to_resources = "/home/morphei/course_work/course_work/resources/";
-    framesWindow.x = 14;
-    framesWindow.y = 10;
+    framesWindow.x = 10;
+    framesWindow.y = 14;
     TimePerFrame = seconds(1.f/60.f);
     if(g_state == 0)
     {
@@ -119,7 +119,10 @@ if(state == MAIN_MENU)
 //----------------------RENDERING GAME-------------------------------------------------------------------------------------------------
 if(state == GAME)
     {
-
+    int x,y;
+    y = hero_position.x/64;
+    x = hero_position.y/64;
+    qDebug()<< x << "-" << y << "scene:" << scene[x][y];
         //Drawing background
         for(int i = 0; i < window_height; i++)
             for(int j = 0; j < window_width; j++)
@@ -129,24 +132,35 @@ if(state == GAME)
                 sprites.at(0).setPosition(background_position);
                 mainWindow.draw(sprites.at(0));
             }
-        hero_sprite.setPosition(hero_position);
-        int x,y;
-        x = hero_position.y/64;
-        y = hero_position.x/64;
-        if(scene[x][y]!=-1)
-        mainWindow.draw(hero_sprite);
-        //Drawing objects
-        for(int i = 0; i <= framesWindow.y; i++)
-            for(int j = 0; j <= framesWindow.x; j++)
+        for(int i = 0; i < framesWindow.x; i++)
+            for(int j = 0; j < framesWindow.y; j++)
             {
-                if(scene[i][j]!=0&&scene[i][j]!=-1)
+                if(scene[i][j]==1&&scene[i][j]!=-1&&scene[i][j]!=0)
                 {
                 object_position.x = 0 + j*64;
                 object_position.y = 0 + i*64;
                 sprites.at(scene[i][j]).setPosition(object_position);
                 mainWindow.draw(sprites.at(scene[i][j]));
                 }
+
             }
+        //Drawing hero
+        hero_sprite.setPosition(hero_position);
+        mainWindow.draw(hero_sprite);
+        //Drawing objects
+        for(int i = 0; i < framesWindow.x; i++)
+            for(int j = 0; j < framesWindow.y; j++)
+            {
+                if(scene[i][j]!=1&&scene[i][j]!=-1&&scene[i][j]!=0)
+                {
+                object_position.x = 0 + j*64;
+                object_position.y = 0 + i*64;
+               sprites.at(scene[i][j]).setPosition(object_position);
+                mainWindow.draw(sprites.at(scene[i][j]));
+                }
+            }
+        if(scene[x][y]==-1)
+                    mainWindow.draw(hero_sprite);
 
     }
     mainWindow.display();
