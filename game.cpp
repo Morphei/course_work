@@ -6,7 +6,7 @@ int scene[10][14] {  2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2,
                     -1,-1, 0, 0,-1,-1, 0, 2,-1,-1, 0, 0, 0,-1,
                      2, 0, 0, 0, 0, 0, 0,-1,-1, 1, 2, 0, 0, 0,
                     -1,-1, 0, 1, 0, 0, 0, 0, 0, 0,-1, 2, 0, 0,
-                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1, 0,
+                     3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1, 0,
                      0, 0, 0, 2, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0,
                      0, 0, 2, 2, 2, 2, 2, 2, 2,-1,-1, 0, 0, 0,
                      0, 0,-1,-1,-1,-1,-1, 2, 0, 2, 0, 2, 0, 0,
@@ -135,7 +135,7 @@ if(state == GAME)
         for(int i = 0; i < framesWindow.x; i++)
             for(int j = 0; j < framesWindow.y; j++)
             {
-                if(scene[i][j]==1&&scene[i][j]!=-1&&scene[i][j]!=0)
+                if(scene[i][j]!=2&&scene[i][j]!=-1&&scene[i][j]!=0)
                 {
                 object_position.x = 0 + j*64;
                 object_position.y = 0 + i*64;
@@ -151,7 +151,7 @@ if(state == GAME)
         for(int i = 0; i < framesWindow.x; i++)
             for(int j = 0; j < framesWindow.y; j++)
             {
-                if(scene[i][j]!=1&&scene[i][j]!=-1&&scene[i][j]!=0)
+                if(scene[i][j]==2&&scene[i][j]!=-1&&scene[i][j]!=0)
                 {
                 object_position.x = 0 + j*64;
                 object_position.y = 0 + i*64;
@@ -159,8 +159,6 @@ if(state == GAME)
                 mainWindow.draw(sprites.at(scene[i][j]));
                 }
             }
-        if(scene[x][y]==-1)
-                    mainWindow.draw(hero_sprite);
 
     }
     mainWindow.display();
@@ -196,17 +194,19 @@ void game::loadResources()
         textures.at(0).loadFromFile(path_to_resources+"grass_background_02.jpg");
         flower.loadFromFile(path_to_resources+"obj_01.png");
         tree.loadFromFile(path_to_resources+"obj_03.png");
-        //textures.push_back(way);
+        way.loadFromFile(path_to_resources+"obj_04.png");
         textures.push_back(flower);
         textures.push_back(tree);
+        textures.push_back(way);
         Sprite tree_sp,way_sp,flower_sp;
         sprites.at(0).setTexture(textures.at(0));
-        //way_sp.setTexture(textures.at(2));
         flower_sp.setTexture(textures.at(1));
         tree_sp.setTexture(textures.at(2));
+        way_sp.setTexture(textures.at(3));
         sprites.push_back(flower_sp);
         sprites.push_back(tree_sp);
-        hero.loadFromFile(path_to_resources+"Bomzh.png");
+        sprites.push_back(way_sp);
+        hero.loadFromFile(path_to_resources+"Bomzh_02.png");
         hero_sprite.setTexture(hero);
         hero_position.x = 128;
         hero_position.y = 128;
@@ -269,7 +269,7 @@ void game::handlePlayerInput(Keyboard::Key key, bool isPressed)
 void game::move(int route){
     switch (route) {
     case 0:
-        hero.loadFromFile(path_to_resources+"Bomzh-back.png");
+        hero.loadFromFile(path_to_resources+"Bomzh-back_02.png");
         for (int i = 0; i < 16; i++){
         hero_position.y -= 4;
         render();
@@ -277,7 +277,7 @@ void game::move(int route){
         break;
 
     case 1:
-        hero.loadFromFile(path_to_resources+"Bomzh-main.png");
+        hero.loadFromFile(path_to_resources+"Bomzh-main_02.png");
         for (int i = 0; i < 16; i++){
             hero_position.y += 4;
             render();
@@ -285,7 +285,7 @@ void game::move(int route){
         break;
 
     case 2:
-        hero.loadFromFile(path_to_resources+"Bomzh-left.png");
+        hero.loadFromFile(path_to_resources+"Bomzh-left_02.png");
         for (int i = 0; i < 16; i++){
         hero_position.x -= 4;
         render();
@@ -293,7 +293,7 @@ void game::move(int route){
         break;
 
     case 3:
-        hero.loadFromFile(path_to_resources+"Bomzh.png");
+        hero.loadFromFile(path_to_resources+"Bomzh_02.png");
         for (int i = 0; i < 16; i++){
         hero_position.x += 4;
         render();
