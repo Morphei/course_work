@@ -17,7 +17,7 @@ int scene[10][14] {  2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2,
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/896,640), "GameName")
 {
-    path_to_resources = "/home/morphei/course_work/course_work/resources/";
+    path_to_resources = "/home/hkitty/course_work/resources/";
     framesWindow.x = 10;
     framesWindow.y = 14;
     TimePerFrame = seconds(1.f/60.f);
@@ -270,33 +270,41 @@ void game::move(int route){
     switch (route) {
     case 0:
         hero.loadFromFile(path_to_resources+"Bomzh-back_02.png");
+        if (hero_position.y/64>0){
         for (int i = 0; i < 16; i++){
         hero_position.y -= 4;
         render();
+        }
         }
         break;
 
     case 1:
         hero.loadFromFile(path_to_resources+"Bomzh-main_02.png");
+        if (hero_position.y/64 < 9){
         for (int i = 0; i < 16; i++){
             hero_position.y += 4;
             render();
+        }
         }
         break;
 
     case 2:
         hero.loadFromFile(path_to_resources+"Bomzh-left_02.png");
+        if (hero_position.x/64 > 0){
         for (int i = 0; i < 16; i++){
         hero_position.x -= 4;
         render();
+        }
         }
         break;
 
     case 3:
         hero.loadFromFile(path_to_resources+"Bomzh_02.png");
+        if (hero_position.x/64 < 13){
         for (int i = 0; i < 16; i++){
         hero_position.x += 4;
         render();
+        }
         }
         break;
     default:
