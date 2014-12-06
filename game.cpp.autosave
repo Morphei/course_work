@@ -250,7 +250,6 @@ void game::handlePlayerInput(Keyboard::Key key, bool isPressed)
         if (isPressed){
             if (key == sf::Keyboard::W || key == sf::Keyboard::Up){
                 move(0);
-                isPressed == false;
                 }
             else if (key == sf::Keyboard::S || key == sf::Keyboard::Down){
                 move(1);

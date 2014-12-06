@@ -1,6 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 #include <SFML/Graphics.hpp>
+#include <QDebug>
+#include <QTcpSocket>
+#include <SFML/Network.hpp>
 
 class game
 {
@@ -15,7 +18,7 @@ private:
     void loadResources();
     void handlePlayerInput(sf::Keyboard::Key key,bool isPressed);
     void move(int route);
-
+    void connect();
 private:
     sf::String path_to_resources;
     sf::Vector2i framesWindow;
