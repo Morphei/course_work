@@ -175,7 +175,7 @@ if(state == GAME)
                 sprites.at(animation_pos).setPosition(object_position);
                 mainWindow.draw(sprites.at(animation_pos));
                 animation_pos_timer++;
-                if(animation_pos_timer==1000)
+                if(animation_pos_timer==500)
                 {
                     animation_pos++;
                     animation_pos_timer=0;
@@ -184,8 +184,6 @@ if(state == GAME)
                 {
                 animation_pos=2;
                 }
-                qDebug() << timeSinceLastUpdate.asSeconds() << "  ";
-                qDebug() << animation_pos;
                 }
             }
 
