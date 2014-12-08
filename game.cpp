@@ -365,9 +365,8 @@ void game::connect(){
     QByteArray Nickname;
     Nickname = "hkitty";
     socket->write(Nickname);
-    socket->waitForBytesWritten();
-    QString info = socket->readAll();
-    qDebug() << info;
+//    socket->waitForBytesWritten();
+//    QString info = socket->readAll();
     /*sf::Socket::Status status = socket.connect("127.0.0.1", port);
     if (status != sf::Socket::Done)
     {
