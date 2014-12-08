@@ -1,5 +1,4 @@
 #include <QCoreApplication>
-
 #include "game.h"
 
 int main()
