@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <QDebug>
 #include <QTcpSocket>
-#include <SFML/Network.hpp>
+#include <iostream>
 
 class game
 {
@@ -19,12 +19,21 @@ private:
     void handlePlayerInput(sf::Keyboard::Key key,bool isPressed);
     void move(int route);
     void connect();
+
+private slots:
+    void slotReadServer();
+    void slotSendPosition();
+
 private:
+    QTcpSocket *socket;
+    sf::Clock clock;
     sf::String path_to_resources;
     sf::Vector2i framesWindow;
-    sf::Time TimePerFrame;
-    int index_Menu;
+    sf::Time TimePerFrame, timeSinceLastUpdate;
+    int index_Menu, animation_pos, animation_pos_timer;
     enum game_state {MAIN_MENU, GAME};
+    int port = 1488;
+    //sf::TcpSocket socket;
     game_state state;
     sf::Vector2f background_position, object_position;
     int window_height, window_width;

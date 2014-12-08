@@ -3,21 +3,40 @@
 
 using namespace sf;
 
+//0 - background
+//1 - flower
+//2 - tree 1 position
+//3 - tree 1 position (transparent)
+//4 - tree 2 position
+//5 - tree 2 position (transparent)
+//6 - road
 int scene[10][14] {  2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2,
                     -1,-1, 0, 0,-1,-1, 0, 2,-1,-1, 0, 0, 0,-1,
                      2, 0, 0, 0, 0, 0, 0,-1,-1, 1, 2, 0, 0, 0,
                     -1,-1, 0, 1, 0, 0, 0, 0, 0, 0,-1, 2, 0, 0,
-                     3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1, 0,
+                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1, 0,
                      0, 0, 0, 2, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0,
                      0, 0, 2, 2, 2, 2, 2, 2, 2,-1,-1, 0, 0, 0,
                      0, 0,-1,-1,-1,-1,-1, 2, 0, 2, 0, 2, 0, 0,
                      0, 0, 2, 0, 2, 0, 2,-1,-1,-1,-1,-1,-1, 0,
                      2, 0,-1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 1
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+//                     0,0,0,0,0,0,0,0,0,0,0,0,0,0
                                                 };
 
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/896,640), "Greenwood v.0.01")
 {
+    animation_pos_timer=0;
+    animation_pos = 2;
     path_to_resources = "/home/hkitty/course_work/resources/";
     framesWindow.x = 10;
     framesWindow.y = 14;
@@ -35,8 +54,7 @@ game::game(bool g_state)
 
 void game::run()
 {
-    sf::Clock clock;
-    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    timeSinceLastUpdate = sf::Time::Zero;
     mainWindow.setVerticalSyncEnabled(true);
     while(mainWindow.isOpen())
     {
@@ -61,6 +79,7 @@ void game::processEvents()
             mainWindow.close();
         if(event.type == Event::KeyPressed)
         {
+            mainWindow.setKeyRepeatEnabled(false);
             handlePlayerInput(event.key.code,true);
         }
         if(event.type == Event::KeyReleased)
@@ -122,7 +141,7 @@ if(state == GAME)
     int x,y;
     y = hero_position.x/64;
     x = hero_position.y/64;
-    qDebug()<< x << "-" << y << "scene:" << scene[x][y];
+    //qDebug()<< x << "-" << y << "scene:" << scene[x][y];
         //Drawing background
         for(int i = 0; i < window_height; i++)
             for(int j = 0; j < window_width; j++)
@@ -151,12 +170,24 @@ if(state == GAME)
         for(int i = 0; i < framesWindow.x; i++)
             for(int j = 0; j < framesWindow.y; j++)
             {
-                if(scene[i][j]==2&&scene[i][j]!=-1&&scene[i][j]!=0)
+                if(scene[i][j]==2)
                 {
                 object_position.x = 0 + j*64;
-                object_position.y = 0 + i*64;
-                sprites.at(scene[i][j]).setPosition(object_position);
-                mainWindow.draw(sprites.at(scene[i][j]));
+                object_position.y = 0 + i*64;   
+                sprites.at(animation_pos).setPosition(object_position);
+                mainWindow.draw(sprites.at(animation_pos));
+                animation_pos_timer++;
+                if(animation_pos_timer==1000)
+                {
+                    animation_pos++;
+                    animation_pos_timer=0;
+                }
+                if(animation_pos==4)
+                {
+                animation_pos=2;
+                }
+                //qDebug() << timeSinceLastUpdate.asSeconds() << "  ";
+                //qDebug() << animation_pos;
                 }
             }
 
@@ -190,21 +221,33 @@ void game::loadResources()
     {
         window_height=mainWindow.getSize().x/128;
         window_width=mainWindow.getSize().y/128+3;
-        Texture tree,way,flower;
-        textures.at(0).loadFromFile(path_to_resources+"grass_background_02.jpg");
+        Texture tree,road,flower, tree_2, tree_tr, tree_2_tr;
+        textures.at(0).loadFromFile(path_to_resources+"grass_background.jpg");
         flower.loadFromFile(path_to_resources+"obj_01.png");
         tree.loadFromFile(path_to_resources+"obj_03.png");
-        way.loadFromFile(path_to_resources+"obj_04.png");
+        road.loadFromFile(path_to_resources+"obj_04.png");
+        tree_2.loadFromFile(path_to_resources+"obj_03_01.png");
+        tree_tr.loadFromFile(path_to_resources+"obj_03_tr.png");
+        tree_2_tr.loadFromFile(path_to_resources+"obj_03_01_tr.png");
         textures.push_back(flower);
         textures.push_back(tree);
-        textures.push_back(way);
-        Sprite tree_sp,way_sp,flower_sp;
+        textures.push_back(tree_tr);
+        textures.push_back(tree_2);
+        textures.push_back(tree_2_tr);
+        textures.push_back(road);
+        Sprite tree_sp,way_sp,flower_sp, tree_sp_2, tree_sp_tr, tree_sp_2_tr;
         sprites.at(0).setTexture(textures.at(0));
         flower_sp.setTexture(textures.at(1));
         tree_sp.setTexture(textures.at(2));
-        way_sp.setTexture(textures.at(3));
+        tree_sp_tr.setTexture(textures.at(3));
+        tree_sp_2.setTexture(textures.at(4));
+        tree_sp_2_tr.setTexture(textures.at(5));
+        way_sp.setTexture(textures.at(6));
         sprites.push_back(flower_sp);
         sprites.push_back(tree_sp);
+        sprites.push_back(tree_sp_2);
+        sprites.push_back(tree_sp_tr);
+        sprites.push_back(tree_sp_2_tr);
         sprites.push_back(way_sp);
         hero.loadFromFile(path_to_resources+"Bomzh_02.png");
         hero_sprite.setTexture(hero);
@@ -250,7 +293,6 @@ void game::handlePlayerInput(Keyboard::Key key, bool isPressed)
         if (isPressed){
             if (key == sf::Keyboard::W || key == sf::Keyboard::Up){
                 move(0);
-                isPressed == false;
                 }
             else if (key == sf::Keyboard::S || key == sf::Keyboard::Down){
                 move(1);
@@ -270,6 +312,11 @@ void game::move(int route){
     case 0:
         hero.loadFromFile(path_to_resources+"Bomzh-back_02.png");
         if (hero_position.y/64>0){
+            QByteArray position;
+            QDataStream out(&position, QIODevice::WriteOnly);
+            out.setVersion(QDataStream::Qt_5_2);
+            socket->write(position);
+            socket->waitForBytesWritten();
         for (int i = 0; i < 16; i++){
         hero_position.y -= 4;
         render();
@@ -312,11 +359,32 @@ void game::move(int route){
 }
 
 void game::connect(){
-    int port = 1488;
-    sf::TcpSocket socket;
-    sf::Socket::Status status = socket.connect("127.0.0.1", port);
+    socket = new QTcpSocket;
+    socket->connectToHost("127.0.0.1", port);
+    qDebug() << "connected";
+    QByteArray Nickname;
+    Nickname = "hkitty";
+    socket->write(Nickname);
+    socket->waitForBytesWritten();
+    QString info = socket->readAll();
+    qDebug() << info;
+    /*sf::Socket::Status status = socket.connect("127.0.0.1", port);
     if (status != sf::Socket::Done)
     {
         //Error
+        qDebug() << "not connection";
     }
+    std::string sSend = "hkitty";
+    sf::Packet Nickname;
+    Nickname << "hkitty";
+    socket.send(Nickname);
+    socket.send("hkitty", NULL);*/
+}
+
+void game::slotReadServer(){
+
+}
+
+void game::slotSendPosition(){
+
 }
