@@ -35,9 +35,10 @@ int scene[10][14] {  2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2,
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/896,640), "Greenwood v.0.01")
 {
+    port = 1488;
     animation_pos_timer=0;
     animation_pos = 2;
-    path_to_resources = "/home/hkitty/course_work/resources/";
+    path_to_resources = "/home/morphei/course_work/course_work/resources/";
     framesWindow.x = 10;
     framesWindow.y = 14;
     TimePerFrame = seconds(1.f/60.f);
@@ -177,7 +178,7 @@ if(state == GAME)
                 sprites.at(animation_pos).setPosition(object_position);
                 mainWindow.draw(sprites.at(animation_pos));
                 animation_pos_timer++;
-                if(animation_pos_timer==1000)
+                if(animation_pos_timer==500)
                 {
                     animation_pos++;
                     animation_pos_timer=0;
@@ -186,8 +187,7 @@ if(state == GAME)
                 {
                 animation_pos=2;
                 }
-                //qDebug() << timeSinceLastUpdate.asSeconds() << "  ";
-                //qDebug() << animation_pos;
+
                 }
             }
 
@@ -365,9 +365,8 @@ void game::connect(){
     QByteArray Nickname;
     Nickname = "hkitty";
     socket->write(Nickname);
-    socket->waitForBytesWritten();
-    QString info = socket->readAll();
-    qDebug() << info;
+//    socket->waitForBytesWritten();
+//    QString info = socket->readAll();
     /*sf::Socket::Status status = socket.connect("127.0.0.1", port);
     if (status != sf::Socket::Done)
     {
