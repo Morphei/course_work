@@ -35,11 +35,9 @@ int scene[10][14] {  2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2,
 game::game(bool g_state)
     : mainWindow(VideoMode(/*1024,768*/896,640), "Greenwood v.0.01")
 {
-    port = 1488;
     animation_pos_timer=0;
     animation_pos = 2;
-//    path_to_resources = "/home/hkitty/course_work/resources/";
-    path_to_resources = "/home/morphei/course_work/course_work/client/resources/";
+    path_to_resources = "/home/hkitty/course_work/resources/";
     framesWindow.x = 10;
     framesWindow.y = 14;
     TimePerFrame = seconds(1.f/60.f);
@@ -122,7 +120,7 @@ if(state == MAIN_MENU)
 }
 if(state == GAME)
 {
-    //readUnitPositions();
+    readUnitPositions();
 }
 
 }
@@ -168,15 +166,13 @@ if(state == GAME)
 
             }
         //Drawing hero
-
-        hero_sprite.setPosition(hero_position.x, hero_position.y);
+        hero_sprite.setPosition(hero_position);
         mainWindow.draw(hero_sprite);
-
         for(int i = 0; i < count_users; i++){
             hero_position.x = v_units_positions.at(i).x;
-            //hero_position.x /= 64;
+            hero_position.x /= 64;
             hero_position.y = v_units_positions.at(i).y;
-            //hero_position.y /= 64;
+            hero_position.y /= 64;
             hero_sprite.setPosition(hero_position);
             mainWindow.draw(hero_sprite);
         }
@@ -363,16 +359,13 @@ void game::move(int route){
     default:
         break;
     }
-    qDebug() << hero_position.x << " : " << hero_position.y << "after move";
     sendPosition();
-    readUnitPositions();
 }
 
 void game::connect(){
-    socket = new TcpSocket;
-    socket->connect("127.0.0.1", port);
+    socket = new QTcpSocket;
+    socket->connectToHost("127.0.0.1", port);
     sendPosition();
-    readUnitPositions();
 
 //    out << hero_position.x;
 //    QByteArray position_y;
@@ -408,23 +401,21 @@ void game::sendPosition(){
     socket->write(position);
     //qDebug() << hero_position.x;
     socket->waitForBytesWritten();
-    qDebug() << hero_position.x << " : " << hero_position.y << "after sending";
 }
 
 void game::readUnitPositions()
 {
-    qDebug() << "Entered read func";
     //socket->state().
     //socket->stateChanged();
     QByteArray unit_positions = socket->readAll();
     QDataStream in(&unit_positions, QIODevice::ReadOnly);
     in >> count_users;
     qDebug() << count_users;
-    for (int i = 0;i < 1/*count_users*/; i++){
+    for (int i = 0;i < count_users; i++){
         in >> u_pos.x;
+        qDebug() << u_pos.x;
         in >> u_pos.y;
         v_units_positions.push_back(u_pos);
-                qDebug() << u_pos.x << ":" << u_pos.y << "after reading position from server";
     }
 }
 
