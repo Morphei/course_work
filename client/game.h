@@ -28,7 +28,7 @@ private:
         float x;
         float y;
     };
-    QTcpSocket *socket;
+    sf::TcpSocket *socket;
     std::vector<units_positions> v_units_positions;
     units_positions u_pos;
     sf::Clock clock;
@@ -37,7 +37,7 @@ private:
     sf::Time TimePerFrame, timeSinceLastUpdate;
     int index_Menu, animation_pos, animation_pos_timer;
     enum game_state {MAIN_MENU, GAME};
-    int port = 1488;
+    int port;
     //sf::TcpSocket socket;
     game_state state;
     sf::Vector2f background_position, object_position;
